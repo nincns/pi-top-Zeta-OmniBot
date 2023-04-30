@@ -36,3 +36,9 @@ Parallel to the 4 function scripts, the web server is also started, which presen
 ## Initial process:
 
 At the beginning, the wheels are briefly rotated to turn all to the same measuring mark. Although only one wheel is used as a reference, it would not be necessary if you accept slight deviations in the distance. But it looks nicer if all 4 return values of the wheels are identical.
+
+## Note on the simple robotic kit
+
+In principle, the program can already be used with the simple robotic kit, because all requirements are already met with the take-away roller and the normal wheels. However, the wheels are slightly larger (75mm) and this would have to be adjusted.
+At the beginning, the wheels are briefly rotated to turn all to the same measuring mark. Although only one wheel is used as a reference, it would not be necessary if you accept slight deviations in the distance. But it looks nicer if all 4 return values of the wheels are identical.
+At the beginning, the wheels are briefly rotated to turn all to the same measuring mark. Although only one wheel is used as a reference, it would not be necessary if you accept slight deviations in the distance. But it looks nicer if all 4 return values of the wheels are identical.
