@@ -42,3 +42,7 @@ At the beginning, the wheels are briefly rotated to turn all to the same measuri
 In principle, the program can already be used with the simple robotic kit, because all requirements are already met with the take-away roller and the normal wheels. However, the wheels are slightly larger (75mm) and this would have to be adjusted.
 At the beginning, the wheels are briefly rotated to turn all to the same measuring mark. Although only one wheel is used as a reference, it would not be necessary if you accept slight deviations in the distance. But it looks nicer if all 4 return values of the wheels are identical.
 At the beginning, the wheels are briefly rotated to turn all to the same measuring mark. Although only one wheel is used as a reference, it would not be necessary if you accept slight deviations in the distance. But it looks nicer if all 4 return values of the wheels are identical.
+
+## Open points
+
+Currently, no image of the cameras is being streamed to the bot controller, I am still working on this.
