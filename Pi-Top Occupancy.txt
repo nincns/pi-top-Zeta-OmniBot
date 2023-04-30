@@ -1,0 +1,5 @@
+Occupancy of the Pi-Top Distance Sensor and Servo Camera
+D0 ultra sonic distance sensor left
+S0 servo cam left
+D7 ultra sonic distance sensor right
+S3 servo cam right
