@@ -28,3 +28,11 @@
 ## How it works
 
 In principle, the functionality is very simple, you start the bot_start.py which starts all sub-processes. Including the 4 scripts for movement, rotation, servo and measurement. As soon as there is a YAML file with the required instructions in the "message" folder, it will be executed. Feedback is written to a msg_ file for further processing. The executed driving or moving command is moved to the "store" folder. Timestamps and consecutive numbers help to sort better.
+
+## Flask Application server (server)
+
+Parallel to the 4 function scripts, the web server is also started, which presents the possible inputs as a web form. When entering the values, they are processed as well as in the console program, files are generated and the robot is moved.
+
+## Initial process:
+
+At the beginning, the wheels are briefly rotated to turn all to the same measuring mark. Although only one wheel is used as a reference, it would not be necessary if you accept slight deviations in the distance. But it looks nicer if all 4 return values of the wheels are identical.
