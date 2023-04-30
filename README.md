@@ -1,6 +1,6 @@
 # Pi-Top Zeta OmniBot
 
-===== File Structure =====
+<h1> File Structure </h1>
 <code>
 ├── app.py
 ├── bot_move.py
