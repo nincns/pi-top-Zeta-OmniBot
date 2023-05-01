@@ -1,35 +1,15 @@
+#!/usr/bin/env python3
 from flask import Flask, render_template, request, redirect, url_for, Response
 import os
 import yaml
-import cv2
-import time
+#import cv2
+#import time
 from datetime import datetime
+from camera import MultiCamera
 
 app = Flask(__name__)
 
-camera_list = []
-
-camera_ids = ['/dev/video0', '/dev/video2']
-
-for camera_id in camera_ids:
-    camera = cv2.VideoCapture(camera_id, cv2.CAP_V4L2)
-    camera.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
-    camera.set(cv2.CAP_PROP_FPS, 30)
-    camera_list.append(camera)
-
-def gen(camera):
-    while True:
-        success, frame = camera.read()
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-            time.sleep(0.033)  # 0.033 seconds for a 30 FPS video stream
-
+multicamera = MultiCamera(video_sources=[0, 2])
 
 def write_config_to_file(prefix, config):
     now = datetime.now()
@@ -47,14 +27,27 @@ def write_config_to_file(prefix, config):
     with open(file_path, "w") as outfile:
         yaml.dump(config, outfile)
 
-@app.route('/video_feed/<int:camera_index>')
-def video_feed(camera_index):
-    return Response(gen(camera_list[camera_index]),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
-
 @app.route('/')
 def index():
     return render_template('index.html')
+
+def gen(camera, src):
+    while True:
+        frame = camera.get_frame(src)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+@app.route('/video_feed1')
+def video_feed1():
+    multicamera.start()
+    return Response(gen(multicamera, 0),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_feed2')
+def video_feed2():
+    multicamera.start()
+    return Response(gen(multicamera, 2),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/set_movement', methods=['POST'])
 def set_movement():

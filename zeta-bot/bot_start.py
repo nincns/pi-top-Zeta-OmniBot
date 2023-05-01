@@ -5,9 +5,9 @@ import yaml
 from datetime import datetime
 import subprocess
 import sys
-import threading
-import time
-import atexit
+#import threading
+#import time
+#import atexit
 from flask import Flask
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -146,7 +146,7 @@ def main():
             rotate_process.terminate()
             servo_process.terminate()
             sensors_process.terminate()
-            flask_process.terminate()
+            os.killpg(os.getpgid(flask_process.pid), signal.SIGTERM)
             observer.stop()
             observer.join()
             sys.exit(0)
