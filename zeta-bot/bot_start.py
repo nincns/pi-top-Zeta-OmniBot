@@ -5,9 +5,6 @@ import yaml
 from datetime import datetime
 import subprocess
 import sys
-#import threading
-#import time
-#import atexit
 from flask import Flask
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -108,7 +105,7 @@ def main():
         rotate_process = subprocess.Popen(["python3", "bot_rotate.py"])
         servo_process = subprocess.Popen(["python3", "bot_servo.py"])
         sensors_process = subprocess.Popen(["python3", "bot_sensors.py"])
-        flask_process = subprocess.Popen(["export FLASK_APP=app.py && export FLASK_ENV=development && flask run --host=0.0.0.0 --port=5000"],
+        flask_process = subprocess.Popen(["export FLASK_APP=app.py && flask run --host=0.0.0.0 --port=5000"],
                                  stdout=subprocess.DEVNULL,
                                  shell=True,
                                  preexec_fn=os.setsid)
