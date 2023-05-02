@@ -10,14 +10,14 @@
             height: 100%;
             border-collapse: collapse;
         }
-    
+
         td {
             vertical-align: bottom;
             text-align: left;
             padding: 15px;
             border: 1px solid #dddddd;
         }
-    
+
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
@@ -54,29 +54,21 @@
                     <label for="rpm">Enter RPM (-114 to 114):</label>
                     <input type="number" name="rpm" id="rpm" required>
                     <br>
-                    <label for="direction_fl">Enter direction for M0 (CW or CCW):</label>
-                    <select name="direction_fl" id="direction_fl" required>
-                        <option value="CW">CW</option>
-                        <option value="CCW">CCW</option>
-                    </select>
+                    <label>Enter direction for M0:</label>
+                    <input type="radio" name="direction_fl" value="CW">CW
+                    <input type="radio" name="direction_fl" value="CCW">CCW
                     <br>
-                    <label for="direction_bl">Enter direction for M1 (CW or CCW):</label>
-                    <select name="direction_bl" id="direction_bl" required>
-                        <option value="CW">CW</option>
-                        <option value="CCW">CCW</option>
-                    </select>
+                    <label>Enter direction for M1:</label>
+                    <input type="radio" name="direction_bl" value="CW">CW
+                    <input type="radio" name="direction_bl" value="CCW">CCW
                     <br>
-                    <label for="direction_fr">Enter direction for M2 (CW or CCW):</label>
-                    <select name="direction_fr" id="direction_fr" required>
-                        <option value="CW">CW</option>
-                        <option value="CCW">CCW</option>
-                    </select>
+                    <label>Enter direction for M2:</label>
+                    <input type="radio" name="direction_fr" value="CW">CW
+                    <input type="radio" name="direction_fr" value="CCW">CCW
                     <br>
-                    <label for="direction_br">Enter direction for M3 (CW or CCW):</label>
-                    <select name="direction_br" id="direction_br" required>
-                        <option value="CW">CW</option>
-                        <option value="CCW">CCW</option>
-                    </select>
+                    <label>Enter direction for M3:</label>
+                    <input type="radio" name="direction_br" value="CW">CW
+                    <input type="radio" name="direction_br" value="CCW">CCW
                     <br>
                     <label for="target_rotation">Enter number of wheel rotations:</label>
                     <input type="number" name="target_rotation" id="target_rotation" step="0.01" required>
@@ -89,11 +81,9 @@
             <td>
                 <h2>Set Servo Position</h2>
                 <form action="/set_servo_position" method="post">
-                    <label for="servo_name">Enter servo name (S0 or S3):</label>
-                    <select name="servo_name" id="servo_name" required>
-                        <option value="S0">S0</option>
-                        <option value="S3">S3</option>
-                    </select>
+                    <label for="servo_name">Enter servo name:</label>
+                    <input type="radio" name="servo_name" id="servo_name_left" value="S0" required>Left (S0)
+                    <input type="radio" name="servo_name" id="servo_name_right" value="S3" required>Right (S3)
                     <br>
                     <label for="angle">Enter angle (-90 to 90):</label>
                     <input type="number" name="angle" id="angle" min="-90" max="90" required>
@@ -104,11 +94,9 @@
             <td>
                 <h2>Get Measurement</h2>
                 <form action="/get_measurement" method="post">
-                    <label for="sensor_name">Enter sensor name (D0 or D7):</label>
-                    <select name="sensor_name" id="sensor_name" required>
-                        <option value="D0">D0</option>
-                        <option value="D7">D7</option>
-                    </select>
+                    <label for="sensor_name">Enter sensor name:</label>
+                    <input type="radio" name="sensor_name" id="sensor_name_left" value="D0" required>Ultrasonic Left (D0)
+                    <input type="radio" name="sensor_name" id="sensor_name_right" value="D7" required>Ultrasonic Right (D7)
                     <br>
                     <button type="submit">Submit</button>
                 </form>
@@ -117,3 +105,4 @@
     </table>
 </body>
 </html>
+
