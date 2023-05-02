@@ -33,7 +33,7 @@ Start the bot_start.py with sudo or better than root
 <code>
 python3 bot_start.py
 </code>
-The web server is reachable under the IP of the host with port 5000 ex. http://<ip-address>:5000
+The web server is reachable under the IP of the host with port 5000 ex. http://< ip-address >:5000
 
 ## Flask Application server (server)
 
