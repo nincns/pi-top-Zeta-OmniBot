@@ -51,4 +51,4 @@ At the beginning, the wheels are briefly rotated to turn all to the same measuri
 
 ## Last Changes
 
-alle aktuellen Funktionen laufen einwandfrei, ich habe zusätzlich einen Notstop vorbereitet.
+All current functions are running perfectly, I have also prepared an emergency stop.
