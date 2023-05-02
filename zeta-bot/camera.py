@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class MultiCamera:
-    def __init__(self, fps=20, video_sources=[0]):
+    def __init__(self, fps=10, video_sources=[0]):
         logger.info(f"Initializing camera class with {fps} fps and video_sources={video_sources}")
         self.fps = fps
         self.video_sources = video_sources
