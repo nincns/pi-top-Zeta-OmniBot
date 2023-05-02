@@ -2,8 +2,6 @@
 from flask import Flask, render_template, request, redirect, url_for, Response
 import os
 import yaml
-#import cv2
-#import time
 from datetime import datetime
 from camera import MultiCamera
 
@@ -65,21 +63,22 @@ def set_movement():
 @app.route('/set_rotation', methods=['POST'])
 def set_rotation():
     rpm = int(request.form['rpm'])
-    direction_fl = request.form['direction_fl']
-    direction_bl = request.form['direction_bl']
-    direction_fr = request.form['direction_fr']
-    direction_br = request.form['direction_br']
     target_rotation = float(request.form['target_rotation'])
 
     data = {
         "rpm": rpm,
-        "direction_fl": direction_fl,
-        "direction_bl": direction_bl,
-        "direction_fr": direction_fr,
-        "direction_br": direction_br,
         "target_rotation": target_rotation
     }
 
+    directions = {}
+
+    for direction in ['fl', 'bl', 'fr', 'br']:
+        value = request.form.get(f'direction_{direction}')
+        if value:
+            directions[f'direction_{direction}'] = value
+
+    data.update(directions)
+    
     write_config_to_file("bot_rotate", data)
     return redirect(url_for('index'))
 
