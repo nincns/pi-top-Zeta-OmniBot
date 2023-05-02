@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#content of bot_move.py
 import os
 import time
 import yaml
@@ -6,6 +7,9 @@ from pitop import BrakingType, EncoderMotor, ForwardDirection
 from glob import glob
 import shutil
 from datetime import datetime
+
+def check_kill_switch(kill_switch_file="messages/kill_switch.yaml"):
+    return os.path.exists(kill_switch_file)
 
 def process_file(filepath):
     with open(filepath, "r") as f:
@@ -50,6 +54,23 @@ def calibrate_motors(motors):
             pass
         motor.stop()
 
+def check_for_files(prefixes, directory="messages"):
+    files = os.listdir(directory)
+    for prefix in prefixes:
+        for file in files:
+            if file.startswith(prefix):
+                return True
+    return False
+
+def sort_files_by_creation_time(files):
+    return sorted(files, key=os.path.getctime)
+
+def get_sorted_move_and_rotate_files():
+    move_files = glob("messages/bot_move*.yaml")
+    rotate_files = glob("messages/bot_rotate*.yaml")
+    all_files = move_files + rotate_files
+    return sort_files_by_creation_time(all_files)
+
 motor_fl = EncoderMotor(port_name="M0", name="motor_fl", forward_direction=ForwardDirection.CLOCKWISE)
 motor_bl = EncoderMotor(port_name="M1", name="motor_bl", forward_direction=ForwardDirection.CLOCKWISE)
 motor_fr = EncoderMotor(port_name="M2", name="motor_fr", forward_direction=ForwardDirection.COUNTER_CLOCKWISE)
@@ -64,9 +85,27 @@ for motor in motors:
 calibrate_motors(motors)
 
 while True:
-    files = glob("messages/bot_move*.yaml")
-    for file in files:
-        process_file(file)
-        dest = os.path.join("store", f"ack_{os.path.basename(file)}")
-        shutil.move(file, dest)
+    if check_kill_switch():
+        for motor in motors:
+            motor.stop()
+        print("Kill switch detected. Stopping all motors and exiting.")
+        break
+    if not check_for_files(["progress_bot_move", "progress_bot_rotate"]):
+        sorted_files = get_sorted_move_and_rotate_files()
+        for file in sorted_files:
+            if "bot_rotate" in file:
+                # Wait for the bot_rotate file to be removed
+                while os.path.exists(file):
+                    time.sleep(1)
+                continue
+            elif "bot_move" in file:
+                prefix = "bot_move"
+            else:
+                continue
+
+            new_filename = file.replace(prefix, f"progress_{prefix}")
+            os.rename(file, new_filename)
+            process_file(new_filename)
+            ack_filename = os.path.join("store", f"ack_{os.path.basename(new_filename)}")
+            os.rename(new_filename, ack_filename)
     time.sleep(1)
