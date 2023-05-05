@@ -11,6 +11,9 @@ from datetime import datetime
 def check_kill_switch(kill_switch_file="messages/kill_switch.yaml"):
     return os.path.exists(kill_switch_file)
 
+def clamp_rpm(rpm):
+    return max(-114, min(rpm, 114))
+
 def process_file(filepath):
     with open(filepath, "r") as f:
         config = yaml.safe_load(f)
@@ -29,7 +32,7 @@ def process_file(filepath):
         if direction_key.startswith('direction_'):
             motor = motors.get(direction_key)
             if motor:
-                motor.set_target_rpm(config['rpm'] if direction == "CW" else -config['rpm'])
+                motor.set_target_rpm(clamp_rpm(config['rpm']) if direction == "CW" else -clamp_rpm(config['rpm']))
                 active_motors.append(motor)
                 initial_rotations[motor] = motor.rotation_counter
 

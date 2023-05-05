@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#content of bot_start.py
 import os
 import signal
 import yaml
@@ -8,6 +9,15 @@ import sys
 from flask import Flask
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+
+class MessageEventHandler(FileSystemEventHandler):
+    def on_modified(self, event):
+        if not event.is_directory and event.src_path.endswith(".yaml") and "msg_bot_" in event.src_path:
+            with open(event.src_path, "r") as file:
+                content = file.read()
+                write_output_to_file(f"\nNew message in {event.src_path}:\n{content}\n")
+
+
 
 def signal_handler(sig, frame):
     print("\nStopping Flask server...")

@@ -1,13 +1,27 @@
 #!/usr/bin/env python3
+#content of app.py
 from flask import Flask, render_template, request, redirect, url_for, Response
 import os
 import yaml
 from datetime import datetime
 from camera import MultiCamera
+import subprocess
+
 
 app = Flask(__name__)
 
 multicamera = MultiCamera(video_sources=[0, 2])
+
+@app.route('/run_script', methods=['POST'])
+def run_script():
+    script_name = request.form['script_name']
+    script_path = os.path.join('drive_scripts', script_name)
+
+    if os.path.exists(script_path) and script_name.endswith('.sh'):
+        subprocess.Popen(['bash', script_path])
+        return ('', 204)
+    else:
+        return ('Script not found', 404)
 
 def write_config_to_file(prefix, config):
     now = datetime.now()

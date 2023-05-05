@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class MultiCamera:
-    def __init__(self, fps=10, video_sources=[0]):
+    def __init__(self, fps=5, video_sources=[0]):
         logger.info(f"Initializing camera class with {fps} fps and video_sources={video_sources}")
         self.fps = fps
         self.video_sources = video_sources
@@ -18,7 +18,7 @@ class MultiCamera:
                 logger.debug(f"Camera {src} successfully opened.")
             else:
                 logger.warning(f"Camera {src} failed to open.")
-        self.max_frames = 5 * self.fps
+        self.max_frames = 1 * self.fps
         self.frames = {src: [] for src in self.video_sources}
         self.isrunning = False
 
@@ -49,7 +49,7 @@ class MultiCamera:
         if src in self.frames and len(self.frames[src]) > 0:
             img = cv2.imencode('.jpg', self.frames[src][-1])[1].tobytes()
         else:
-            with open("images/not_found.jpeg", "rb") as f:
+            with open("static/images/not_found.jpeg", "rb") as f:
                 img = f.read()
         return img
 

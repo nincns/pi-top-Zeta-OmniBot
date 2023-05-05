@@ -11,6 +11,9 @@ from datetime import datetime
 def check_kill_switch(kill_switch_file="messages/kill_switch.yaml"):
     return os.path.exists(kill_switch_file)
 
+def clamp_rpm(rpm):
+    return max(-114, min(rpm, 114))
+
 def process_file(filepath):
     with open(filepath, "r") as f:
         config = yaml.safe_load(f)
@@ -20,7 +23,7 @@ def process_file(filepath):
     initial_distances = {motor: motor.distance for motor in motors}
 
     for motor in motors:
-        motor.set_target_rpm(config['rpm'])
+        motor.set_target_rpm(clamp_rpm(config['rpm']))
 
     while abs(motor_fl.distance - initial_distances[motor_fl]) < config['distance']:
         pass

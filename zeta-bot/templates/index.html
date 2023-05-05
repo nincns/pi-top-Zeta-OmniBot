@@ -1,105 +1,328 @@
+<!-- Content of Flask Server index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bot Controller</title>
+    <title>pi-top Zeta PythonBot</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         table {
             width: 100%;
-            height: 100%;
             border-collapse: collapse;
+            border-style: none;
         }
-
+    
         td {
-            vertical-align: bottom;
+            vertical-align: top;
             text-align: left;
             padding: 15px;
-            border: 1px solid #dddddd;
+            border: none;
         }
-
+    
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-    </style>
-</head>
-<body>
-    <h1>Bot Controller</h1>
+    
+        .scrollbar {
+            overflow-y: scroll;
+        }
 
+        .centered-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        textarea {
+            width: 100%;
+        }
+        .centered-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .centered-image img {
+            display: block;
+        }
+
+        #bild-container {
+            width: 320px;
+            height: 240px;
+            background-color: #ffffff;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 320px 240px;
+        }
+        button {
+            width: 100%;
+            height: 60px;
+            background-color: #f2f2f2;
+            border: none;
+            cursor: pointer;
+            outline: none;
+        }
+        .controller-container {
+        padding: 10px;
+        border: 0px solid black;
+        border-radius: 5px;
+        background-color: #f5f5f5;
+    }
+
+    </style>
+    <script>
+        function executeScript(scriptName) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/run_script', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = function() {
+                if (xhr.status === 404) {
+                    alert('Skript nicht gefunden: ' + scriptName);
+                }
+            };
+        
+            xhr.send(`script_name=${encodeURIComponent(scriptName)}`);
+        }
+    </script>
+    <script>
+        function updateBildContainerImage(tabId) {
+            var bildContainer = document.getElementById('bild-container');
+            var bild = new Image();
+            bild.onload = function() {
+                bildContainer.style.backgroundImage = 'url(' + this.src + ')';
+            };
+
+            if (tabId === 'tab1') {
+                bild.src = '{{ url_for("static", filename="images/not_found.jpeg") }}';
+                bildContainer.style.backgroundSize = '320px 240px';
+            } else if (tabId === 'tab2') {
+                bild.src = '{{ url_for("static", filename="images/not_found.jpeg") }}';
+                bildContainer.style.backgroundSize = '320px 240px';
+            } else if (tabId === 'tab3') {
+                bild.src = '{{ url_for("static", filename="images/not_found.jpeg") }}';
+                bildContainer.style.backgroundSize = '320px 240px';
+            } else if (tabId === 'tab4') {
+                bild.src = '{{ url_for("static", filename="images/not_found.jpeg") }}';
+                bildContainer.style.backgroundSize = '320px 240px';
+            } else if (tabId === 'tab5') {
+                bild.src = '{{ url_for("static", filename="images/not_found.jpeg") }}';
+                bildContainer.style.backgroundSize = '320px 240px';
+            } else if (tabId === 'tab6') {
+                bild.src = '{{ url_for("static", filename="images/mecanum_wheels.png") }}';
+                bildContainer.style.backgroundSize = '320px 166px';
+            } else if (tabId === 'tab7') {
+                bild.src = '{{ url_for("static", filename="images/not_found.jpeg") }}';
+                bildContainer.style.backgroundSize = '320px 240px';
+            } else if (tabId === 'tab8') {
+                bild.src = '{{ url_for("static", filename="images/not_found.jpeg") }}';
+                bildContainer.style.backgroundSize = '320px 240px';
+            } else {
+                bild.src = '{{ url_for("static", filename="images/not_found.jpeg") }}';
+                bildContainer.style.backgroundSize = '320px 240px';
+            }
+        }
+    </script>
+
+ 
+</head>
+<body></body>
     <table>
         <tr>
-            <td>
-                <img src="{{ url_for('video_feed1') }}" alt="Kamera 1 Stream" width="320" height="240">
-            </td>
-            <td>
-                <img src="{{ url_for('video_feed2') }}" alt="Kamera 2 Stream" width="320" height="240">
-            </td>
+            <div class="centered-row">
+                <div class="centered-image">
+                    <img src="{{ url_for('video_feed1') }}" alt="Kamera 1 Stream" width="320" height="240">
+                </div>
+                <div class="centered-image">
+                    <div id="bild-container" style="width: 320px; height: 240px; background-color: #ffffff; background-repeat: no-repeat; background-position: center;"></div>
+                </div>
+                <div class="centered-image">
+                    <img src="{{ url_for('video_feed2') }}" alt="Kamera 2 Stream" width="320" height="240">
+                </div>
+            </div>
         </tr>
         <tr>
-            <td>
-                <h2>Set Movement</h2>
-                <form action="/set_movement" method="post">
-                    <label for="rpm">Enter RPM (-114 to 114):</label>
-                    <input type="number" name="rpm" id="rpm" required>
-                    <br>
-                    <label for="distance">Enter distance in cm:</label>
-                    <input type="number" name="distance" id="distance" step="0.01" required>
-                    <br>
-                    <button type="submit">Submit</button>
-                </form>
-            </td>
-            <td>
-                <h2>Set Rotation</h2>
-                <form action="/set_rotation" method="post">
-                    <label for="rpm">Enter RPM (-114 to 114):</label>
-                    <input type="number" name="rpm" id="rpm" required>
-                    <br>
-                    <label>Enter direction for M0:</label>
-                    <input type="radio" name="direction_fl" value="CW">CW
-                    <input type="radio" name="direction_fl" value="CCW">CCW
-                    <br>
-                    <label>Enter direction for M1:</label>
-                    <input type="radio" name="direction_bl" value="CW">CW
-                    <input type="radio" name="direction_bl" value="CCW">CCW
-                    <br>
-                    <label>Enter direction for M2:</label>
-                    <input type="radio" name="direction_fr" value="CW">CW
-                    <input type="radio" name="direction_fr" value="CCW">CCW
-                    <br>
-                    <label>Enter direction for M3:</label>
-                    <input type="radio" name="direction_br" value="CW">CW
-                    <input type="radio" name="direction_br" value="CCW">CCW
-                    <br>
-                    <label for="target_rotation">Enter number of wheel rotations:</label>
-                    <input type="number" name="target_rotation" id="target_rotation" step="0.01" required>
-                    <br>
-                    <button type="submit">Submit</button>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Set Servo Position</h2>
-                <form action="/set_servo_position" method="post">
-                    <label for="servo_name">Enter servo name:</label>
-                    <input type="radio" name="servo_name" id="servo_name_left" value="S0" required>Left (S0)
-                    <input type="radio" name="servo_name" id="servo_name_right" value="S3" required>Right (S3)
-                    <br>
-                    <label for="angle">Enter angle (-90 to 90):</label>
-                    <input type="number" name="angle" id="angle" min="-90" max="90" required>
-                    <br>
-                    <button type="submit">Submit</button>
-                </form>
-            </td>
-            <td>
-                <h2>Get Measurement</h2>
-                <form action="/get_measurement" method="post">
-                    <label for="sensor_name">Enter sensor name:</label>
-                    <input type="radio" name="sensor_name" id="sensor_name_left" value="D0" required>Ultrasonic Left (D0)
-                    <input type="radio" name="sensor_name" id="sensor_name_right" value="D7" required>Ultrasonic Right (D7)
-                    <br>
-                    <button type="submit">Submit</button>
-                </form>
+            <td colspan="3">
+                <fieldset>
+                    <legend></legend>
+                    <div class="container">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tab1" onclick="updateBildContainerImage('tab1')">Controller</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab2" onclick="updateBildContainerImage('tab1')">Message Log</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab3" onclick="updateBildContainerImage('tab1')">Mapping</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab4" onclick="updateBildContainerImage('tab1')">Navigation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab5" onclick="updateBildContainerImage('tab1')">Movement</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab6" onclick="updateBildContainerImage('tab6')">Rotation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab7" onclick="updateBildContainerImage('tab1')">Servo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab8" onclick="updateBildContainerImage('tab1')">UltraSonic</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab1" class="container tab-pane active">
+                                <div class="controller-container">
+                                    <table>
+                                        <tr>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/1.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button1" onclick="executeScript('slide-left-forward.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/2.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button2" onclick="executeScript('move-forward.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/3.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button3" onclick="executeScript('slide-right-forward.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/13.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button13" onclick="executeScript('drive-around-left.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/14.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button14" onclick="executeScript('drive-around-right.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/21.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button21" onclick="executeScript('ultrasonic-left.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/22.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button22" onclick="executeScript('ultrasonic-right.sh')"></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/4.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button4" onclick="executeScript('slide-left.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/5.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button5" onclick="executeScript('stop-all.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/6.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button6" onclick="executeScript('slide-right.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/15.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button15" onclick="executeScript('rotate-left.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/16.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button16" onclick="executeScript('rotate-right.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/23.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button23" onclick="executeScript('servo-left-forward.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/24.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button24" onclick="executeScript('servo-right-forward.sh')"></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/7.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button7" onclick="executeScript('slide-left-back.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/8.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button8" onclick="executeScript('move-back.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/9.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button9" onclick="executeScript('slide-right-back.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/17.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button17" onclick="executeScript('drive-past-left.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/18.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button18" onclick="executeScript('drive-past-right.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/25.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button25" onclick="executeScript('servo-left-back.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/26.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button26" onclick="executeScript('servo-right-back.sh')"></button></td>
+                                        </tr>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/10.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button10" onclick="executeScript('get-slower.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/11.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button11" onclick="executeScript('take-picture.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/12.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button12" onclick="executeScript('getting-faster.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/19.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button19" onclick="executeScript('left-on-the-way.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/20.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button20" onclick="executeScript('right-on-th-way.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/27.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button27" onclick="executeScript('delete-queues.sh')"></button></td>
+                                            <td><button style="font-size: 28px; background: url('/static/images/buttons/28.png') no-repeat center; background-size: cover; width: 60px; height: 60px;" id="button28" onclick="executeScript('function-open.sh')"></button></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="tab2" class="container tab-pane fade">
+                                <textarea id="messages" rows="10" cols="30" class="scrollbar" readonly></textarea>
+                              </div>
+                            <div id="tab3" class="container tab-pane fade">
+                                <p></p>
+                            </div>
+                            <div id="tab4" class="container tab-pane fade">
+                                <p></p>
+                            </div>
+                            <div id="tab5" class="container tab-pane fade">
+                                <form action="/set_movement" method="post">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><label for="rpm">Enter RPM</label></td>
+                                                <td style="text-align: center;"><input type="number" name="rpm" id="rpm" required></td>
+                                                <td style="text-align: center;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="target_rotation">Enter distance in cm:</label></td>
+                                                <td style="text-align: center;"><input type="number" name="distance" id="distance" step="0.01" required></td>
+                                                <td style="text-align: center;"><button type="submit">Submit</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div id="tab6" class="container tab-pane fade">
+                                <form action="/set_rotation" method="post">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><label for="rpm">Enter RPM</label></td>
+                                                <td style="text-align: center;"><input type="number" name="rpm" id="rpm" required></td>
+                                                <td style="text-align: center;"></td> 
+                                            </tr>
+                                            <tr>
+                                                <td><label>Enter direction for left-front:</label></td>
+                                                <td style="text-align: center;"><input type="radio" name="direction_fl" value="CW"> drive forward</td>
+                                                <td style="text-align: center;"><input type="radio" name="direction_fl" value="CCW"> drive back</td>
+                                            </tr>
+                                            <tr>
+                                                <td><label>Enter direction for left-back:</label></td>
+                                                <td style="text-align: center;"><input type="radio" name="direction_bl" value="CW"> drive forward</td>
+                                                <td style="text-align: center;"><input type="radio" name="direction_bl" value="CCW"> drive back</td>
+                                            </tr>
+                                            <tr>
+                                                <td><label>Enter direction for right-front:</label></td>
+                                                <td style="text-align: center;"><input type="radio" name="direction_br" value="CCW"> drive forward</td>
+                                                <td style="text-align: center;"><input type="radio" name="direction_br" value="CW"> drive back</td>
+                                            </tr>
+                                            <tr>
+                                                <td><label>Enter direction for right-back:</label></td>
+                                                <td style="text-align: center;"><input type="radio" name="direction_fr" value="CCW"> drive forward</td>
+                                                <td style="text-align: center;"><input type="radio" name="direction_fr" value="CW"> drive back</td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="target_rotation">Enter number of wheel rotations:</label></td>
+                                                <td style="text-align: center;"><input type="number" name="target_rotation" id="target_rotation" step="0.01" required></td>
+                                                <td style="text-align: center;"><button type="submit">Submit</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div id="tab7" class="container tab-pane fade">
+                                <form action="/set_servo_position" method="post">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><label for="servo_name">Enter servo name:</label></td>
+                                                <td style="text-align: center;"><input type="radio" name="servo_name" id="servo_name_left" value="S0" required> Left</td>
+                                                <td style="text-align: center;"><input type="radio" name="servo_name" id="servo_name_right" value="S3" required> Right</td>
+                                    
+                                            </tr>
+                                            <tr>
+                                                <td><label for="angle">Enter angle (-90 to 90):</label></td>
+                                                <td style="text-align: center;"><input type="number" name="angle" id="angle" min="-90" max="90" required></td>
+                                                <td style="text-align: center;"><button type="submit">Submit</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div id="tab8" class="container tab-pane fade">
+                                <form action="/get_measurement" method="post">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><label for="sensor_name">Enter sensor name:</label></td>
+                                                <td style="text-align: center;"><input type="radio" name="sensor_name" id="sensor_name_left" value="D0" required> Ultrasonic Left</td>
+                                                <td style="text-align: center;"><input type="radio" name="sensor_name" id="sensor_name_right" value="D7" required> Ultrasonic Right</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td style="text-align: center;"><button type="submit">Submit</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
             </td>
         </tr>
     </table>
