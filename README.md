@@ -2,6 +2,11 @@
 
 ## File Structure
 <code>
+├── S0.txt
+├── S7.txt
+├── __pycache__
+│   ├── app.cpython-39.pyc
+│   └── camera.cpython-39.pyc
 ├── app.py
 ├── bot_move.py
 ├── bot_rotate.py
@@ -9,15 +14,66 @@
 ├── bot_servo.py
 ├── bot_start.py
 ├── camera.py
-├── images
-│   └── not_found.jpeg
+├── drive_scripts
+│   ├── delete-queues.sh
+│   ├── drive-around-left.sh
+│   ├── drive-around-right.sh
+│   ├── drive-past-left.sh
+│   ├── drive-past-right.sh
+│   ├── get-slower.sh
+│   ├── getting-faster.sh
+│   ├── left-on-the-way.sh
+│   ├── move-back.sh
+│   ├── move-forward.sh
+│   ├── right-on-th-way.sh
+│   ├── rotate-left.sh
+│   ├── rotate-right.sh
+│   ├── servo-left-back.sh
+│   ├── servo-left-forward.sh
+│   ├── slide-left-back.sh
+│   ├── slide-left-forward.sh
+│   ├── slide-left.sh
+│   ├── slide-right-back.sh
+│   ├── slide-right-forward.sh
+│   ├── slide-right.sh
+│   ├── stop-all.sh
+│   └── template_rotation.sh
 ├── messages
-│   ├── kill.sh
-│   ├── move.sh
-│   └── rotate.sh
-├── __pycache__
-│   ├── app.cpython-39.pyc
-│   └── camera.cpython-39.pyc
+├── rotation.conf
+├── speed.conf
+├── static
+│   └── images
+│       ├── buttons
+│       │   ├── 1.png
+│       │   ├── 10.png
+│       │   ├── 11.png
+│       │   ├── 12.png
+│       │   ├── 13.png
+│       │   ├── 14.png
+│       │   ├── 15.png
+│       │   ├── 16.png
+│       │   ├── 17.png
+│       │   ├── 18.png
+│       │   ├── 19.png
+│       │   ├── 2.png
+│       │   ├── 20.png
+│       │   ├── 21.png
+│       │   ├── 22.png
+│       │   ├── 23.png
+│       │   ├── 24.png
+│       │   ├── 25.png
+│       │   ├── 26.png
+│       │   ├── 27.png
+│       │   ├── 28.png
+│       │   ├── 3.png
+│       │   ├── 4.png
+│       │   ├── 5.png
+│       │   ├── 6.png
+│       │   ├── 7.png
+│       │   ├── 8.png
+│       │   └── 9.png
+│       ├── mecanum_wheels.png
+│       └── not_found.jpeg
 ├── store
 └── templates
     └── index.html
